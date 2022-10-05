@@ -7,7 +7,7 @@
 class Buffer
 {
 public:
-    void readFile(const char fileName[]);
+    void readFile(std::string fileName);
     void display();
     void setViewableLines(int numOfLines);
     void openLink(int linkNumber);
