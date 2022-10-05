@@ -9,7 +9,7 @@ class Buffer
 public:
     void readFile(std::string fileName);
     void display();
-    void setViewableLines(int numOfLines);
+    void setViewableArea(int verticalLines, int horizontalCharacters);
     void openLink(int linkNumber);
 
 private:
@@ -18,4 +18,5 @@ private:
     std::vector<int> m_history;
     int m_topLineNum;
     int m_viewableLines;
+    int m_charsPerLine;
 };
