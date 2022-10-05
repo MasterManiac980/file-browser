@@ -36,7 +36,7 @@ void Buffer::setViewableArea(int verticalLines, int horizontalCharacters)
     m_viewableLines = verticalLines;
     m_charsPerLine = horizontalCharacters;
 }
-#
+
 void Buffer::openLink(int linkNumber)
 {
     m_bufferData.clear();
