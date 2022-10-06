@@ -7,10 +7,11 @@
 class Buffer
 {
 public:
-    void readFile(std::string fileName);
     void display();
-    void setViewableArea(int verticalLines, int horizontalCharacters);
+    void nextPage();
     void openLink(int linkNumber);
+    void readFile(std::string fileName);
+    void setViewableArea(int verticalLines, int horizontalCharacters);
 
 private:
     std::vector<std::string> m_bufferData;
