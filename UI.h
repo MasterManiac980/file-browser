@@ -5,6 +5,7 @@
 class UI
 {
 public:
+void run();
 
 private:
     Buffer m_buffer;
