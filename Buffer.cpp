@@ -43,9 +43,17 @@ void Buffer::readFile(std::string fileName)
         while (!infile.eof())
         {
             infile >> currentLine;
-            if (infile.eof())
-            {
-                break;
+            if (infile.eof()) break;
+            if (currentLine == "<a") {
+                std::string fileDescriptor = "<";
+                infile >> fileDescriptor;
+                infile >> m_fileNames.push_back();
+            }
+            else if {
+
+            }
+            else if {
+
             }
             m_bufferData.push_back(currentLine);
         }
