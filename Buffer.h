@@ -17,7 +17,7 @@ public:
 private:
     std::vector<std::string> m_bufferData;
     std::vector<std::string> m_fileNames;
-    std::vector<int> m_history;
+    std::vector<std::string> m_history;
     int m_topLineNum;
     int m_viewableLines;
     int m_charsPerLine;
