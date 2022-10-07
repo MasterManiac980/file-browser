@@ -2,7 +2,7 @@
 
 int main(int argc, char const *argv[])
 {
-    UI userInterface;
-    userInterface.run();
+    UI UI;
+    UI.run();
     return 0;
 }

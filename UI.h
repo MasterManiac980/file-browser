@@ -12,6 +12,7 @@ private:
     void display();
     void execute(char selection, bool & done);
     int m_viewableLines; 
+    std::string error_message_;
 
     
 };
