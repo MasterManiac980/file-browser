@@ -1,4 +1,6 @@
+#include <cstdlib>
 #include <iostream>
+#include <string>
 #include <iomanip>
 #include "Buffer.h"
 #include "UI.H"
