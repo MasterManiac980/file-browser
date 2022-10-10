@@ -1,7 +1,7 @@
 all: main clean
 
 main: main.cpp Buffer.o UI.o
-	g++ -std=c++17 main.cpp Buffer.o UI.o -o filebrowser
+	g++ -std=c++17 --static main.cpp Buffer.o UI.o -o filebrowser
 
 Buffer.o: Buffer.cpp Buffer.h
 	g++ -std=c++17 -c Buffer.cpp -o Buffer.o
