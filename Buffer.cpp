@@ -106,7 +106,7 @@ void Buffer::readFile(std::string fileName)
 }
 
 void Buffer::setUIError(std::string errorMessage) {
-
+    m_UIErrorMessage = errorMessage;
 }
 
 void Buffer::setViewableArea(int verticalLines, int horizontalCharacters)
