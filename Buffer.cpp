@@ -6,7 +6,7 @@
 
 void Buffer::display()
 {
-    int lineCharCount;
+    int lineCharCount = 0;
     std::size_t lineNumber = 1;
     bool fitsInLine;
 
@@ -18,12 +18,14 @@ void Buffer::display()
         if (!fitsInLine || word == "\n")
         {
             lineNumber = lineNumber + 1;
-            std::cout << std::endl << std::setw(3) << lineNumber << "  ";
+            lineCharCount = 0;
+            std::cout << std::endl
+                      << std::setw(3) << lineNumber << "  ";
             continue;
         }
         else if (fitsInLine)
         {
-            std::cout << word;
+            std::cout << word << " ";
             continue;
         }
     }
@@ -50,11 +52,13 @@ void Buffer::openLink(int linkNumber)
 
 void Buffer::printError(std::ostream &out)
 {
-    if (!m_errorMessage.empty()) {
-    out << "Buffer Error: " + m_errorMessage << std::endl;
+    if (!m_errorMessage.empty())
+    {
+        out << "Buffer Error: " + m_errorMessage << std::endl;
     }
-    if (!m_UIErrorMessage.empty()) {
-    out << "UI Error: " + m_UIErrorMessage<< std::endl;
+    if (!m_UIErrorMessage.empty())
+    {
+        out << "UI Error: " + m_UIErrorMessage << std::endl;
     }
 }
 
@@ -66,23 +70,16 @@ void Buffer::openFile(std::string fileName)
         m_currentFileName = fileName;
         std::string currentWord;
 
-        while (!infile.eof())
+        while (infile >> currentWord)
         {
-            infile >> currentWord;
-
-            if (infile.eof())
-            {
-                break;
-            }
-
             if (currentWord == "<a")
             {
                 std::string fileName;
 
-                infile >> currentWord;
                 infile >> fileName;
+                infile >> currentWord;
 
-                fileName.erase(fileName.begin() + (fileName.size() - 1)); // removes '>' from the end of the file name
+                currentWord.erase(currentWord.begin() + (currentWord.size() - 1)); // removes '>' from the end of the file name
                 m_fileNames.push_back(fileName);
                 currentWord = "<" + currentWord + ">[" + std::to_string(m_fileNames.size()) + "]";
             }
@@ -92,9 +89,20 @@ void Buffer::openFile(std::string fileName)
             }
             else if (currentWord == "<p>")
             {
-                currentWord = "\n\n";
+                m_bufferData.push_back("\n");
+                m_bufferData.push_back("\n");
+                continue;
             }
             m_bufferData.push_back(currentWord);
+
+            if (infile.get() == '\n')
+            {
+                m_bufferData.push_back("\n");
+            }
+            if (infile.peek() == static_cast<char>(9)) //Tab Character
+            {
+                m_bufferData.push_back("	");
+            }
         }
     }
     else
@@ -105,7 +113,8 @@ void Buffer::openFile(std::string fileName)
     infile.close();
 }
 
-void Buffer::setUIError(std::string errorMessage) {
+void Buffer::setUIError(std::string errorMessage)
+{
     m_UIErrorMessage = errorMessage;
 }
 
