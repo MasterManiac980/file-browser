@@ -7,12 +7,20 @@
 class Buffer
 {
 public:
+    // For UI startup
+    void setViewableArea(int verticalLines, int horizontalCharacters);
+
+    // Functions for main UI run loop
     void display();
+
+    // Functions for UI menu
     void nextPage();
     void openLast();
     void openLink(int linkNumber);
     void readFile(std::string fileName);
-    void setViewableArea(int verticalLines, int horizontalCharacters);
+
+    // Other
+    void printError(std::string errorMessage, std::ostream& out = std::cout);
 
 private:
     std::vector<std::string> m_bufferData;
@@ -22,4 +30,5 @@ private:
     int m_viewableLines;
     int m_charsPerLine;
     std::string m_currentFileName;
+    std::string m_errorMessage;
 };

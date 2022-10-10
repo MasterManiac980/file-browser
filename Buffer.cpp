@@ -6,6 +6,27 @@
 
 void Buffer::display()
 {
+    int lineCharCount;
+    std::size_t lineNumber = 1;
+    bool fitsInLine;
+
+    std::cout << std::setw(3) << lineNumber << "  "; // Prints first line number
+    for (std::string &word : m_bufferData)
+    {
+        fitsInLine = (lineCharCount + word.size()) <= m_charsPerLine;
+
+        if (!fitsInLine || word == "\n")
+        {
+            lineNumber = lineNumber + 1;
+            std::cout << std::setw(3) << lineNumber << "  ";
+            continue;
+        }
+        else if (fitsInLine)
+        {
+            std::cout << word;
+            continue;
+        }
+    }
 }
 
 void Buffer::nextPage()
@@ -13,7 +34,8 @@ void Buffer::nextPage()
     m_topLineNum += m_viewableLines;
 }
 
-void Buffer::openLast() {
+void Buffer::openLast()
+{
     readFile(m_history[m_history.size() - 1]);
     m_history.erase(m_history.begin() + (m_history.size() - 1));
 }
@@ -26,29 +48,53 @@ void Buffer::openLink(int linkNumber)
     readFile(m_fileNames[linkNumber]);
 }
 
-void Buffer::readFile(std::string fileName)
-/*
-
-    TODO: Modify the input based on the tags provided in the text
-
-    1. Look for < in each line
-    2. After each <, take use >> to take in the tag type
-    3. Use if statement(?) to change functionality based on tag type,
-        a. br: insert line break character
-        b. p: insert two line break characters to create a blank line
-        c. a: take in next two strings using >> and modify text presented to match
-
-*/
+void Buffer::printError(std::string errorMessage, std::ostream &out)
 {
-    
+    out << "Error: " + errorMessage << std::endl;
+}
+
+void Buffer::readFile(std::string fileName)
+{
     std::ifstream infile(fileName);
     if (!infile.fail())
     {
         m_currentFileName = fileName;
+        std::string currentWord;
+
+        while (!infile.eof())
+        {
+            infile >> currentWord;
+
+            if (infile.eof())
+            {
+                break;
+            }
+
+            if (currentWord == "<a")
+            {
+                std::string fileName;
+
+                infile >> currentWord;
+                infile >> fileName;
+
+                fileName.erase(fileName.begin() + (fileName.size() - 1)); // removes '>' from the end of the file name
+                m_fileNames.push_back(fileName);
+                currentWord = "<" + currentWord + ">[" + std::to_string(m_fileNames.size()) + "]";
+            }
+            else if (currentWord == "<br>")
+            {
+                currentWord = "\n";
+            }
+            else if (currentWord == "<p>")
+            {
+                currentWord = "\n\n";
+            }
+            m_bufferData.push_back(currentWord);
+        }
     }
     else
     {
-        
+        m_errorMessage = "File: " + fileName + " failed to open.";
         return;
     }
     infile.close();
