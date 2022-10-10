@@ -18,7 +18,7 @@ void Buffer::display()
         if (!fitsInLine || word == "\n")
         {
             lineNumber = lineNumber + 1;
-            std::cout << std::setw(3) << lineNumber << "  ";
+            std::cout << std::endl << std::setw(3) << lineNumber << "  ";
             continue;
         }
         else if (fitsInLine)
