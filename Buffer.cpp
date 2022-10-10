@@ -48,9 +48,14 @@ void Buffer::openLink(int linkNumber)
     readFile(m_fileNames[linkNumber]);
 }
 
-void Buffer::printError(std::string errorMessage, std::ostream &out)
+void Buffer::printError(std::ostream &out)
 {
-    out << "Error: " + errorMessage << std::endl;
+    if (!m_errorMessage.empty()) {
+    out << "Buffer Error: " + m_errorMessage << std::endl;
+    }
+    if (!m_UIErrorMessage.empty()) {
+    out << "UI Error: " + m_UIErrorMessage<< std::endl;
+    }
 }
 
 void Buffer::readFile(std::string fileName)
@@ -98,6 +103,10 @@ void Buffer::readFile(std::string fileName)
         return;
     }
     infile.close();
+}
+
+void Buffer::setUIError(std::string errorMessage) {
+
 }
 
 void Buffer::setViewableArea(int verticalLines, int horizontalCharacters)

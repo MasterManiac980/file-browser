@@ -19,8 +19,9 @@ public:
     void openLink(int linkNumber);
     void readFile(std::string fileName);
 
-    // Other
-    void printError(std::string errorMessage, std::ostream& out = std::cout);
+    // Error Reporting
+    void printError(std::ostream& out = std::cout);
+    void setUIError(std::string errorMessage);
 
 private:
     std::vector<std::string> m_bufferData;
@@ -31,4 +32,5 @@ private:
     int m_charsPerLine;
     std::string m_currentFileName;
     std::string m_errorMessage;
+    std::string m_UIErrorMessage;
 };
