@@ -17,7 +17,7 @@ public:
     void nextPage();
     void openLast();
     void openLink(int linkNumber);
-    void readFile(std::string fileName);
+    void openFile(std::string fileName);
 
     // Error Reporting
     void printError(std::ostream& out = std::cout);

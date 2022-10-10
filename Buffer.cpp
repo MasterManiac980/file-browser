@@ -36,7 +36,7 @@ void Buffer::nextPage()
 
 void Buffer::openLast()
 {
-    readFile(m_history[m_history.size() - 1]);
+    openFile(m_history[m_history.size() - 1]);
     m_history.erase(m_history.begin() + (m_history.size() - 1));
 }
 
@@ -45,7 +45,7 @@ void Buffer::openLink(int linkNumber)
     linkNumber -= 1; // Converts number provided to index for accessing file name in vector
     m_bufferData.clear();
     m_history.push_back(m_currentFileName);
-    readFile(m_fileNames[linkNumber]);
+    openFile(m_fileNames[linkNumber]);
 }
 
 void Buffer::printError(std::ostream &out)
@@ -58,7 +58,7 @@ void Buffer::printError(std::ostream &out)
     }
 }
 
-void Buffer::readFile(std::string fileName)
+void Buffer::openFile(std::string fileName)
 {
     std::ifstream infile(fileName);
     if (!infile.fail())
