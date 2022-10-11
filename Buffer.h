@@ -31,6 +31,6 @@ private:
     int m_viewableLines;
     int m_charsPerLine;
     std::string m_currentFileName;
-    std::string m_errorMessage;
+    std::string m_BufferErrorMessage;
     std::string m_UIErrorMessage;
 };

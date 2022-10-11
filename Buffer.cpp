@@ -52,13 +52,15 @@ void Buffer::openLink(int linkNumber)
 
 void Buffer::printError(std::ostream &out)
 {
-    if (!m_errorMessage.empty())
+    if (!m_BufferErrorMessage.empty())
     {
-        out << "Buffer Error: " + m_errorMessage << std::endl;
+        out << "Buffer Error: " + m_BufferErrorMessage << std::endl;
+        m_BufferErrorMessage.clear();
     }
     if (!m_UIErrorMessage.empty())
     {
         out << "UI Error: " + m_UIErrorMessage << std::endl;
+        m_UIErrorMessage.clear();
     }
 }
 
@@ -107,7 +109,7 @@ void Buffer::openFile(std::string fileName)
     }
     else
     {
-        m_errorMessage = "File: " + fileName + " failed to open.";
+        m_BufferErrorMessage = "File: " + fileName + " failed to open.";
         return;
     }
     infile.close();
