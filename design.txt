@@ -17,4 +17,88 @@ Implementation:
         -
 
     - Buffer Class (Buffer.h and Buffer.cpp):
-        -Handles 
+
+        - Handles all file interactions
+
+            - Opening files
+            - Conversion of tags
+            - File history
+        
+        - The data is stored in nine variables (The "m_" prefix indicates a private member variable)
+
+            - m_bufferData
+
+                - Stores the data read in from the file by openFile()
+                - Each index is one "word"
+
+            - m_fileNames
+
+                - 
+
+            - m_history
+
+                - 
+
+            - m_topLineNum
+
+                - 
+
+            - m_viewableLines
+
+                - 
+
+            - m_charsPerLine
+
+                - 
+
+            - m_currentFileName
+
+                - 
+
+            - m_BufferErrorMessage
+
+                - 
+
+            - m_UIErrorMessage
+
+                - 
+
+        - Contains eight functions with various purposes
+
+            - setViewableArea()
+
+                - Accepts two parameters, one for the number of lines to be presented vertically 
+                  and the other for the number of characters to be shown horizontally
+            
+            - display()
+
+                - 
+
+            - nextPage()
+
+                - Increments m_topLineNum by the value of m_viewableLines
+
+            - openLastFile()
+
+                - 
+
+            - openLink()
+
+                -
+            
+            - openFile()
+
+                - Opens the file with the name passed into the function call
+                - Interprets tags in the file and converts them to their plaintext from
+                - Stores the file names found in <a> tags in a vector for easy access later
+            
+            - printError()
+
+                - Handles both UI and Buffer error reporting
+                - Checks to see if either the m_BufferErrorMessage or m_UIErrorMessage strings is empty
+                - If the string is not blank the function prints the message preceded by "Buffer Error: " or "UI Error: "
+                - After the message is printed, the string is cleared to prevent the same 
+                  error from being printed again unnecessarily
+            
+            - setUIError()
+                - Allows the UI to set the error message to be printed by the Buffer
