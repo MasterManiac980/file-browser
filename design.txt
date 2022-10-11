@@ -1,0 +1,20 @@
+Goal: To create a fully functional file browser with the following features:
+    - Read in a file
+    - Interpret three tags: <a>, <br>, and <p>
+    - Display the aforementioned file
+    - Display a user interface
+    - Provide error messages to the end-user
+    - Allows for the use of links created by <a> tag to open other files in the same directory
+    - Allows the user to go back to a previously opened file
+
+
+Implementation:
+
+    - Main (main.cpp):
+        - Initalizes an instance of the UI class and calls the UI::run() function
+
+    - UI Class (UI.h and UI.cpp):
+        -
+
+    - Buffer Class (Buffer.h and Buffer.cpp):
+        -Handles 
