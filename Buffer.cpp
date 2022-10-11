@@ -36,7 +36,7 @@ void Buffer::nextPage()
     m_topLineNum += m_viewableLines;
 }
 
-void Buffer::openLast()
+void Buffer::openLastFile()
 {
     openFile(m_history[m_history.size() - 1]);
     m_history.erase(m_history.begin() + (m_history.size() - 1));
