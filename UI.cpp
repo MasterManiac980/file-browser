@@ -15,15 +15,18 @@ void UI::display()
     //Clear screen isn't working. Ask Cary. 
 
     //If there is an error message 
-    if (!error_message_.empty()) {
-        cout << "ERROR: " + error_message_ << endl;
-        error_message_.clear();
-    }
+    m_buffer.printError();
+    cout << Long_Dash << endl;
+    m_buffer.display();
+    cout << Long_Dash << endl;
+    cout << "(O)pen (G)o (N)ext  (P)revious (Q)uit\n";
+    cout << Short_Dash << endl;
 }
 
 void UI::execute(char selection, bool & isDone)
 {
-switch (selection) {
+switch (selection) 
+{
      
         case 'n': 
         {
@@ -37,7 +40,7 @@ switch (selection) {
             cout << "file name: ";
             string file_name;
             getline(cin, file_name);
-            
+
             int file_num;
             file_num = stoi(file_name);
             m_buffer.openLink(file_num);
@@ -58,16 +61,22 @@ switch (selection) {
             break;
         }
 
-        case 'p': {
+        case 'p': 
+        {
             //previous page
             m_buffer.openLastFile();
             break;
         }
 
-        case 'q': {
+        case 'q': 
+        {
             //quit
             isDone = true;
             break;
+        }
+        default: 
+        {
+
         }
     }
 }
@@ -85,7 +94,8 @@ void UI::run()
     m_buffer.setViewableArea(m_vertical_lines,m_horizontal_lines);
 
     bool isDone = false;
-    while (!isDone) {
+    while (!isDone) 
+    {
         display();
         cout << "command: ";
         char command;
