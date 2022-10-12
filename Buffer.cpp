@@ -5,28 +5,36 @@
 #include "Buffer.h"
 
 void Buffer::display()
+/*
+    TODO: rewrite to account for both line max and character max
+*/
 {
     uint32_t lineCharCount = 0;
     uint64_t lineNumber = m_topLineNum;
     bool fitsInLine;
 
     std::cout << std::setw(3) << lineNumber << "  "; // Prints first line number
-    for (std::string &word : m_bufferData)
+    for (uint32_t i = m_lastPrintedWord; i < m_bufferData.size(); i++)
     {
-        fitsInLine = (lineCharCount + word.size()) <= m_charsPerLine;
+        fitsInLine = (lineCharCount + m_bufferData[i].size()) <= m_charsPerLine;
 
-        if (!fitsInLine || word == "\n")
+        if (!fitsInLine || m_bufferData[i] == "\n")
         {
-            lineNumber = lineNumber + 1;
-            lineCharCount = 0;
-            std::cout << std::endl
-                      << std::setw(3) << lineNumber << "  ";
-            continue;
+            if (((lineNumber += 1) - m_topLineNum) < m_viewableLines)
+            {
+                lineCharCount = 0;
+                std::cout << std::endl
+                          << std::setw(3) << lineNumber << "  ";
+            }
+            else
+            {
+                m_lastPrintedWord = i - 1;
+                break;
+            }
         }
         else if (fitsInLine)
         {
-            std::cout << word << " ";
-            continue;
+            std::cout << m_bufferData[i] << " ";
         }
     }
 }
@@ -91,7 +99,11 @@ void Buffer::openFile(std::string fileName)
             }
             else if (currentWord == "<p>")
             {
-                m_bufferData.push_back("\n");
+                if (m_bufferData[m_bufferData.size() - 1] != "\n") 
+                // checks to make sure there isn't a newline character before the <p> tag
+                {
+                    m_bufferData.push_back("\n");
+                }
                 m_bufferData.push_back("\n");
                 continue;
             }

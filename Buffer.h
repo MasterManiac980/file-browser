@@ -28,6 +28,7 @@ private:
     uint64_t m_topLineNum = 1;
     uint16_t m_viewableLines;
     uint32_t m_charsPerLine;
+    uint64_t m_lastPrintedWord = 0;
 
     std::vector<std::string> m_fileNames;
     std::vector<std::string> m_history;
