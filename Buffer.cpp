@@ -5,28 +5,36 @@
 #include "Buffer.h"
 
 void Buffer::display()
+/*
+    TODO: rewrite to account for both line max and character max
+*/
 {
-    int lineCharCount = 0;
-    std::size_t lineNumber = 1;
+    uint32_t lineCharCount = 0;
+    uint64_t lineNumber = m_topLineNum;
     bool fitsInLine;
 
     std::cout << std::setw(3) << lineNumber << "  "; // Prints first line number
-    for (std::string &word : m_bufferData)
+    for (uint32_t i = m_lastPrintedWord; i < m_bufferData.size(); i++)
     {
-        fitsInLine = (lineCharCount + word.size()) <= m_charsPerLine;
+        fitsInLine = (lineCharCount + m_bufferData[i].size()) <= m_charsPerLine;
 
-        if (!fitsInLine || word == "\n")
+        if (!fitsInLine || m_bufferData[i] == "\n")
         {
-            lineNumber = lineNumber + 1;
-            lineCharCount = 0;
-            std::cout << std::endl
-                      << std::setw(3) << lineNumber << "  ";
-            continue;
+            if (((lineNumber += 1) - m_topLineNum) < m_viewableLines)
+            {
+                lineCharCount = 0;
+                std::cout << std::endl
+                          << std::setw(3) << lineNumber << "  ";
+            }
+            else
+            {
+                m_lastPrintedWord = i - 1;
+                break;
+            }
         }
         else if (fitsInLine)
         {
-            std::cout << word << " ";
-            continue;
+            std::cout << m_bufferData[i] << " ";
         }
     }
 }
@@ -42,7 +50,7 @@ void Buffer::openLastFile()
     m_history.erase(m_history.begin() + (m_history.size() - 1));
 }
 
-void Buffer::openLink(int linkNumber)
+void Buffer::openLink(uint32_t linkNumber)
 {
     linkNumber -= 1; // Converts number provided to index for accessing file name in vector
     m_bufferData.clear();
@@ -91,7 +99,11 @@ void Buffer::openFile(std::string fileName)
             }
             else if (currentWord == "<p>")
             {
-                m_bufferData.push_back("\n");
+                if (m_bufferData[m_bufferData.size() - 1] != "\n") 
+                // checks to make sure there isn't a newline character before the <p> tag
+                {
+                    m_bufferData.push_back("\n");
+                }
                 m_bufferData.push_back("\n");
                 continue;
             }
@@ -101,7 +113,7 @@ void Buffer::openFile(std::string fileName)
             {
                 m_bufferData.push_back("\n");
             }
-            if (infile.peek() == static_cast<char>(9)) //Tab Character
+            if (infile.peek() == static_cast<char>(9)) // Tab Character
             {
                 m_bufferData.push_back("	");
             }
@@ -120,7 +132,7 @@ void Buffer::setUIError(std::string errorMessage)
     m_UIErrorMessage = errorMessage;
 }
 
-void Buffer::setViewableArea(int verticalLines, int horizontalCharacters)
+void Buffer::setViewableArea(uint32_t verticalLines, uint32_t horizontalCharacters)
 {
     m_viewableLines = verticalLines;
     m_charsPerLine = horizontalCharacters;
