@@ -9,6 +9,25 @@ using namespace std;
 const string Short_Ast(10,'*');
 const string Long_Ast(80,'*'); 
 
+void UI::run()
+{
+    cout << "Enter Window Height: ";
+    cin >> m_viewableLines;
+    cin.get();  // '\n'
+    cout << '\n';
+    m_buffer.setViewableArea(m_viewableLines);
+
+    bool done = false;
+    while (!done) {
+        display();
+        cout << "command: ";
+        char command;
+        cin >> command;
+        cin.get(); 
+        execute(command, done);
+
+        cout << endl;
+    }
 void UI::execute(char selection, bool & done)
 {
 switch (selection) {
