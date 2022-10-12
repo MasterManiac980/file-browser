@@ -9,32 +9,34 @@ void Buffer::display()
     TODO: rewrite to account for both line max and character max
 */
 {
-    uint32_t lineCharCount = 0;
-    uint64_t lineNumber = m_topLineNum;
-    bool fitsInLine;
+    uint16_t lineCharCount = 0;
+    uint64_t currentLineNumber = m_topLineNum;
+    bool fitsOnLine;
+    static uint64_t nextWordToPrint = 0;
 
-    std::cout << std::setw(3) << lineNumber << "  "; // Prints first line number
-    for (uint32_t i = m_lastPrintedWord; i < m_bufferData.size(); i++)
+    if (currentLineNumber == 1)
     {
-        fitsInLine = (lineCharCount + m_bufferData[i].size()) <= m_charsPerLine;
+        std::cout << std::setw(3) << currentLineNumber << "  ";
+    }
 
-        if (!fitsInLine || m_bufferData[i] == "\n")
+    for (nextWordToPrint; nextWordToPrint < m_bufferData.size(); nextWordToPrint++)
+    {
+        fitsOnLine = (lineCharCount += (m_bufferData[nextWordToPrint].size() + 1)) <= m_charsPerLine; // 1 is added to the size because of the space added to the end of the word
+
+        if (!fitsOnLine || (m_bufferData[nextWordToPrint] == "\n"))
         {
-            if (((lineNumber += 1) - m_topLineNum) < m_viewableLines)
+            if ((currentLineNumber + 1) >= (m_viewableLines + m_topLineNum))
             {
-                lineCharCount = 0;
-                std::cout << std::endl
-                          << std::setw(3) << lineNumber << "  ";
-            }
-            else
-            {
-                m_lastPrintedWord = i - 1;
                 break;
             }
+            currentLineNumber += 1;
+            lineCharCount = 0;
+            std::cout << std::endl
+                      << std::setw(3) << currentLineNumber << "  ";
         }
-        else if (fitsInLine)
+        else if (fitsOnLine && (m_bufferData[nextWordToPrint] != "\n"))
         {
-            std::cout << m_bufferData[i] << " ";
+            std::cout << m_bufferData[nextWordToPrint] << " ";
         }
     }
 }
@@ -99,7 +101,7 @@ void Buffer::openFile(std::string fileName)
             }
             else if (currentWord == "<p>")
             {
-                if (m_bufferData[m_bufferData.size() - 1] != "\n") 
+                if (m_bufferData[m_bufferData.size() - 1] != "\n")
                 // checks to make sure there isn't a newline character before the <p> tag
                 {
                     m_bufferData.push_back("\n");
