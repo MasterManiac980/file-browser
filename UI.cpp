@@ -19,24 +19,32 @@ void UI::display()
         cout << "ERROR: " + error_message_ << endl;
         error_message_.clear();
     }
-    string file_name = m_buffer.;
-
-
-
-
 }
 
 void UI::execute(char selection, bool & isDone)
 {
 switch (selection) {
      
-        case 'n': {
+        case 'n': 
+        {
             //Next page 
             m_buffer.nextPage();   
             break;
         }
-
-        case 'o': {
+        case 'g': 
+        {
+            //open link
+            cout << "file name: ";
+            string file_name;
+            getline(cin, file_name);
+            
+            int file_num;
+            file_num = stoi(file_name);
+            m_buffer.openLink(file_num);
+            m_buffer.printError();
+        }
+        case 'o': 
+        {
             //open file 
             cout << "file name: ";
             string file_name;
@@ -45,17 +53,6 @@ switch (selection) {
             if(file_name.substr(0,1) != "<")
             {
                 m_buffer.openFile(file_name);
-            }
-            else
-            {
-                int file_num;
-                file_num = stoi(file_name);
-                m_buffer.openLink(file_num);
-                
-                if (!m_buffer.openLink(file_num))
-                {
-                error_message_ = "Could not open " + file_name;
-                }
             }
 
             break;
