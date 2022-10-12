@@ -1,5 +1,7 @@
 .vscode/
 
+BufferTesting/
+
 Buffer.o
 UI.o
 
