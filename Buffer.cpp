@@ -6,8 +6,8 @@
 
 void Buffer::display()
 {
-    int lineCharCount = 0;
-    std::size_t lineNumber = 1;
+    uint32_t lineCharCount = 0;
+    uint64_t lineNumber = m_topLineNum;
     bool fitsInLine;
 
     std::cout << std::setw(3) << lineNumber << "  "; // Prints first line number
@@ -42,7 +42,7 @@ void Buffer::openLastFile()
     m_history.erase(m_history.begin() + (m_history.size() - 1));
 }
 
-void Buffer::openLink(int linkNumber)
+void Buffer::openLink(uint32_t linkNumber)
 {
     linkNumber -= 1; // Converts number provided to index for accessing file name in vector
     m_bufferData.clear();
@@ -101,7 +101,7 @@ void Buffer::openFile(std::string fileName)
             {
                 m_bufferData.push_back("\n");
             }
-            if (infile.peek() == static_cast<char>(9)) //Tab Character
+            if (infile.peek() == static_cast<char>(9)) // Tab Character
             {
                 m_bufferData.push_back("	");
             }
@@ -120,7 +120,7 @@ void Buffer::setUIError(std::string errorMessage)
     m_UIErrorMessage = errorMessage;
 }
 
-void Buffer::setViewableArea(int verticalLines, int horizontalCharacters)
+void Buffer::setViewableArea(uint32_t verticalLines, uint32_t horizontalCharacters)
 {
     m_viewableLines = verticalLines;
     m_charsPerLine = horizontalCharacters;
