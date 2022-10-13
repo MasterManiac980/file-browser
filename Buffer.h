@@ -12,6 +12,7 @@ public:
 
     // Functions for main UI run loop
     void display();
+    std::string currentFile() { return m_currentFileName; }
 
     // Functions for UI menu
     void nextPage();
@@ -26,8 +27,8 @@ public:
 
 private:
     std::vector<std::string> m_bufferData;
-    uint64_t m_topLineNum = 1;
-    uint16_t m_viewableLines;
+    int64_t m_topLineNum = 1;
+    int16_t m_viewableLines;
     uint32_t m_charsPerLine;
 
     std::vector<std::string> m_fileNames;

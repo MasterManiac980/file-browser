@@ -2,4 +2,4 @@ Team Members:
     - Cary Keesler (Buffer)
     - Tyler Cady (UI)
 
-Current State of Program:
+Current State of Program: Fully Operational
