@@ -5,39 +5,59 @@
 #include "Buffer.h"
 
 void Buffer::display()
-/*
-    TODO: rewrite to account for both line max and character max
-*/
 {
     uint16_t lineCharCount = 0;
     uint64_t currentLineNumber = m_topLineNum;
     bool fitsOnLine;
     static uint64_t nextWordToPrint = 0;
 
-    if (currentLineNumber == 1)
+    if ((((currentLineNumber - 1) % m_viewableLines) == 0) && (nextWordToPrint < m_bufferData.size()))
+    // makes sure that there is a line number when the first line and next / previous page is printed
     {
-        std::cout << std::setw(3) << currentLineNumber << "  ";
+        std::cout << std::endl
+                  << std::setw(3) << currentLineNumber << "  ";
+        if (m_bufferData[nextWordToPrint] == "\n")
+        {
+            m_bufferData.erase(m_bufferData.begin() + nextWordToPrint);
+        }
     }
 
     for (nextWordToPrint; nextWordToPrint < m_bufferData.size(); nextWordToPrint++)
     {
-        fitsOnLine = (lineCharCount += (m_bufferData[nextWordToPrint].size() + 1)) <= m_charsPerLine; // 1 is added to the size because of the space added to the end of the word
+        fitsOnLine = (lineCharCount += (m_bufferData[nextWordToPrint].size() + 1)) <= m_charsPerLine;
+        // 1 is added to the size because of the space added to the end of the word
 
         if (!fitsOnLine || (m_bufferData[nextWordToPrint] == "\n"))
+        // If the next word won't fit on the current line or if the next word is a newline character, skips to the next line before printing
         {
-            if ((currentLineNumber + 1) >= (m_viewableLines + m_topLineNum))
+            if (!fitsOnLine)
             {
-                break;
+                nextWordToPrint--; // Makes sure that the current word will still print as long as a newline character was not the cause of entrance into the conditional
             }
-            currentLineNumber += 1;
-            lineCharCount = 0;
+            if ((currentLineNumber) == (m_viewableLines + m_topLineNum - 1)) // 1 is subtracted because the first line is line 1
+            {
+                break; // Breaks out of for loop to stop printing words if the line limit has been reached
+            }
             std::cout << std::endl
-                      << std::setw(3) << currentLineNumber << "  ";
+                      << std::setw(3) << (currentLineNumber += 1) << "  "; // Prints out the next line number when the line character limit has been reached
+            lineCharCount = 0;                                             // Sets the char count for the new line back to zero
         }
-        else if (fitsOnLine && (m_bufferData[nextWordToPrint] != "\n"))
+        else if (fitsOnLine)
         {
             std::cout << m_bufferData[nextWordToPrint] << " ";
         }
+    }
+}
+
+void Buffer::lastPage()
+{
+    if ((m_topLineNum - m_viewableLines) < 1)
+    {
+        m_topLineNum -= m_viewableLines;
+    }
+    else
+    {
+        m_BufferErrorMessage = "No previous page.";
     }
 }
 

@@ -15,6 +15,7 @@ public:
 
     // Functions for UI menu
     void nextPage();
+    void lastPage();
     void openLastFile();
     void openLink(uint32_t linkNumber);
     void openFile(std::string fileName);

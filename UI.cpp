@@ -1,108 +1,97 @@
-#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <iomanip>
 #include "Buffer.h"
 #include "UI.H"
 
-using namespace std; 
- 
+using namespace std;
 
 void UI::display()
 {
-    const string Short_Dash(10,'-');
-    const string Long_Dash(80,'-');
-    //Clear screen isn't working. Ask Cary. 
+    const string Short_Dash(10, '-');
+    const string Long_Dash(80, '-');
 
-    //If there is an error message 
+    // prints error if there is one
     m_buffer.printError();
     cout << Long_Dash << endl;
     m_buffer.display();
     cout << Long_Dash << endl;
-    cout << "(O)pen (G)o (N)ext  (P)revious (Q)uit\n";
+    cout << "(O)pen (G)o (N)ext (P)revious (Q)uit\n";
     cout << Short_Dash << endl;
 }
 
-void UI::execute(char selection, bool & isDone)
+void UI::execute(char selection, bool &isDone)
 {
-switch (selection) 
-{
-     
-        case 'n': 
-        {
-            //Next page 
-            m_buffer.nextPage();   
-            break;
-        }
-        case 'g': 
-        {
-            //open link
-            cout << "file name: ";
-            string file_name;
-            getline(cin, file_name);
-
-            int file_num;
-            file_num = stoi(file_name);
-            m_buffer.openLink(file_num);
-            m_buffer.printError();
-        }
-        case 'o': 
-        {
-            //open file 
-            cout << "file name: ";
-            string file_name;
-            getline(cin, file_name);
-
-            if(file_name.substr(0,1) != "<")
-            {
-                m_buffer.openFile(file_name);
-            }
-
-            break;
-        }
-
-        case 'p': 
-        {
-            //previous page
-            m_buffer.openLastFile();
-            break;
-        }
-
-        case 'q': 
-        {
-            //quit
-            isDone = true;
-            break;
-        }
-        default: 
-        {
-
-        }
+    selection = toupper(selection);
+    switch (selection)
+    {
+    case 'N':
+    {
+        // Next page
+        m_buffer.nextPage();
+        break;
+    }
+    case 'G':
+    {
+        // open link
+        int linkNumber;
+        cout << "Link Number: ";
+        cin >> linkNumber;
+        m_buffer.openLink(linkNumber);
+        break;
+    }
+    case 'O':
+    {
+        // open file
+        cout << "File Name: ";
+        string file_name;
+        getline(cin, file_name);
+        m_buffer.openFile(file_name);
+        break;
+    }
+    case 'B':
+    {
+        // last file
+        m_buffer.openLastFile();
+        break;
+    }
+    case 'P':
+    {
+        // previous page
+        m_buffer.lastPage();
+        break;
+    }
+    case 'Q':
+    {
+        // quit
+        isDone = true;
+        break;
+    }
+    default:
+    {
+        m_buffer.setUIError("Invalid command");
+    }
     }
 }
 
 void UI::run()
 {
-    cout << "Enter Window Height: ";
+    char command;
+
+    cout << "Enter Window Height (Lines): ";
     cin >> m_vertical_lines;
-    cin.get();  // '\n'
-    cout << '\n';
-    cout <<"Enter Window Width: ";
+    cout << "Enter Window Width (Characters Per Line): ";
     cin >> m_horizontal_lines;
-    cin.get();  // '\n'
-    cout << '\n';
-    m_buffer.setViewableArea(m_vertical_lines,m_horizontal_lines);
+    m_buffer.setViewableArea(m_vertical_lines, m_horizontal_lines);
 
     bool isDone = false;
-    while (!isDone) 
+    while (!isDone)
     {
+        std::cout << "\033c"; // clears the terminal to allow for the next presentation of the UI;
         display();
-        cout << "command: ";
-        char command;
+        cout << "Please Enter Command (One Character): ";
         cin >> command;
-        cin.get(); 
+        cin.get();
         execute(command, isDone);
-
-        cout << endl;
     }
 }
