@@ -2,7 +2,7 @@
 #include <string>
 #include <iomanip>
 #include "Buffer.h"
-#include "UI.H"
+#include "UI.h"
 
 using namespace std;
 

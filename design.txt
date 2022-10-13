@@ -14,7 +14,7 @@ Implementation:
         - Initalizes an instance of the UI class and calls the UI::run() function
 
     - UI Class (UI.h and UI.cpp):
-        -
+        - 
 
     - Buffer Class (Buffer.h and Buffer.cpp):
 
