@@ -16,7 +16,7 @@ void UI::display()
     cout << Long_Dash << endl;
     m_buffer.display();
     cout << Long_Dash << endl;
-    cout << "(O)pen (G)o (N)ext (P)revious (Q)uit\n";
+    cout << "-(O)pen -(G)o -(B)ack -(N)ext Page -(P)revious Page -(Q)uit\n";
     cout << Short_Dash << endl;
 }
 

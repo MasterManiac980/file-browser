@@ -143,7 +143,7 @@ void Buffer::openFile(std::string fileName)
     }
     else
     {
-        m_BufferErrorMessage = "File: " + fileName + " failed to open.";
+        m_BufferErrorMessage = "File \"" + fileName + "\" failed to open.";
         return;
     }
     infile.close();
