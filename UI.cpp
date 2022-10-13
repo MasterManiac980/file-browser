@@ -13,9 +13,12 @@ void UI::display()
 
     // prints error if there is one
     m_buffer.printError();
-    cout << Long_Dash << endl;
+    cout << m_buffer.currentFile() << endl;
+    cout << Long_Dash << endl
+         << endl;
     m_buffer.display();
-    cout << Long_Dash << endl;
+    cout << endl
+         << Long_Dash << endl;
     cout << "-(O)pen -(G)o -(B)ack -(N)ext Page -(P)revious Page -(Q)uit\n";
     cout << Short_Dash << endl;
 }
@@ -87,7 +90,7 @@ void UI::run()
     bool isDone = false;
     while (!isDone)
     {
-        std::cout << "\033c"; // clears the terminal to allow for the next presentation of the UI;
+        std::cout << "\033c"; // clears the terminal to allow for the next presentation of the UI
         display();
         cout << "Please Enter Command (One Character): ";
         cin >> command;

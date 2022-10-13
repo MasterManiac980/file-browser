@@ -6,64 +6,41 @@
 
 void Buffer::display()
 {
-    uint16_t lineCharCount = 0;
     uint64_t currentLineNumber = m_topLineNum;
-    bool fitsOnLine;
-    static uint64_t nextWordToPrint = 0;
-
-    if ((((currentLineNumber - 1) % m_viewableLines) == 0) && (nextWordToPrint < m_bufferData.size()))
-    // makes sure that there is a line number when the first line and next / previous page is printed
+    if (!m_bufferData.empty())
     {
-        std::cout << std::endl
-                  << std::setw(3) << currentLineNumber << "  ";
-        if (m_bufferData[nextWordToPrint] == "\n")
+        for (currentLineNumber; currentLineNumber < (m_topLineNum + m_viewableLines); currentLineNumber++)
         {
-            m_bufferData.erase(m_bufferData.begin() + nextWordToPrint);
-        }
-    }
-
-    for (nextWordToPrint; nextWordToPrint < m_bufferData.size(); nextWordToPrint++)
-    {
-        fitsOnLine = (lineCharCount += (m_bufferData[nextWordToPrint].size() + 1)) <= m_charsPerLine;
-        // 1 is added to the size because of the space added to the end of the word
-
-        if (!fitsOnLine || (m_bufferData[nextWordToPrint] == "\n"))
-        // If the next word won't fit on the current line or if the next word is a newline character, skips to the next line before printing
-        {
-            if (!fitsOnLine)
+            if ((currentLineNumber - 1) < m_bufferData.size())
             {
-                nextWordToPrint--; // Makes sure that the current word will still print as long as a newline character was not the cause of entrance into the conditional
+                std::cout << std::setw(3) << currentLineNumber << "  " << m_bufferData[currentLineNumber - 1] << std::endl;
             }
-            if ((currentLineNumber) == (m_viewableLines + m_topLineNum - 1)) // 1 is subtracted because the first line is line 1
-            {
-                break; // Breaks out of for loop to stop printing words if the line limit has been reached
-            }
-            std::cout << std::endl
-                      << std::setw(3) << (currentLineNumber += 1) << "  "; // Prints out the next line number when the line character limit has been reached
-            lineCharCount = 0;                                             // Sets the char count for the new line back to zero
-        }
-        else if (fitsOnLine)
-        {
-            std::cout << m_bufferData[nextWordToPrint] << " ";
         }
     }
 }
 
 void Buffer::lastPage()
 {
-    if ((m_topLineNum - m_viewableLines) < 1)
+    if ((m_topLineNum - m_viewableLines) > 0)
     {
         m_topLineNum -= m_viewableLines;
     }
     else
     {
-        m_BufferErrorMessage = "No previous page.";
+        m_topLineNum = m_bufferData.size() - (m_bufferData.size() % m_viewableLines);
     }
 }
 
 void Buffer::nextPage()
 {
-    m_topLineNum += m_viewableLines;
+    if ((m_topLineNum + m_viewableLines) < m_bufferData.size())
+    {
+        m_topLineNum += m_viewableLines;
+    }
+    else
+    {
+        m_topLineNum = 1;
+    }
 }
 
 void Buffer::openLastFile()
@@ -75,7 +52,6 @@ void Buffer::openLastFile()
 void Buffer::openLink(uint32_t linkNumber)
 {
     linkNumber -= 1; // Converts number provided to index for accessing file name in vector
-    m_bufferData.clear();
     m_history.push_back(m_currentFileName);
     openFile(m_fileNames[linkNumber]);
 }
@@ -99,8 +75,10 @@ void Buffer::openFile(std::string fileName)
     std::ifstream infile(fileName);
     if (!infile.fail())
     {
+        m_bufferData.clear(); // Makes sure the buffer is clear before reading a new file into it
         m_currentFileName = fileName;
         std::string currentWord;
+        std::string currentLine;
 
         while (infile >> currentWord)
         {
@@ -117,36 +95,66 @@ void Buffer::openFile(std::string fileName)
             }
             else if (currentWord == "<br>")
             {
-                currentWord = "\n";
+                m_bufferData.push_back(currentLine);
+                currentLine.clear();
+                continue;
             }
             else if (currentWord == "<p>")
             {
-                if (m_bufferData[m_bufferData.size() - 1] != "\n")
-                // checks to make sure there isn't a newline character before the <p> tag
+                if (!currentLine.empty())
                 {
-                    m_bufferData.push_back("\n");
+                    m_bufferData.push_back(currentLine);
+                    currentLine.clear();
                 }
-                m_bufferData.push_back("\n");
+                m_bufferData.push_back(currentLine);
                 continue;
             }
-            m_bufferData.push_back(currentWord);
 
-            if (infile.get() == '\n')
+            if ((currentLine.size() + currentWord.size() + 1) < m_charsPerLine)
             {
-                m_bufferData.push_back("\n");
+                if (infile.get() == '\n')
+                {
+                    currentLine += currentWord;
+                    m_bufferData.push_back(currentLine);
+                    currentLine.clear();
+                    continue;
+                }
+                else
+                {
+                    currentLine += currentWord;
+                    currentLine += " ";
+                }
             }
-            if (infile.peek() == static_cast<char>(9)) // Tab Character
+            else
             {
-                m_bufferData.push_back("	");
+                if (infile.get() == '\n')
+                {
+                    currentLine += currentWord;
+                    m_bufferData.push_back(currentLine);
+                    currentLine.clear();
+                    continue;
+                }
+                else
+                {
+                    m_bufferData.push_back(currentLine);
+                    currentLine.clear();
+                    currentLine += currentWord;
+                    currentLine += " ";
+                }
+            }
+            if (infile.peek() == '	')
+            {
+                currentLine.push_back('	');
             }
         }
+        m_bufferData.push_back(currentLine); // if a file doesn't have a \n at the end of its last line, this pushes that line on to the data vector
+        infile.close();
+        m_topLineNum = 1;
     }
     else
     {
         m_BufferErrorMessage = "File \"" + fileName + "\" failed to open.";
-        return;
     }
-    infile.close();
 }
 
 void Buffer::setUIError(std::string errorMessage)
