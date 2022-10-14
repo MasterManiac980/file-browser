@@ -2,8 +2,7 @@
 
 BufferTesting/
 
-Buffer.o
-UI.o
+*.o
 
 filebrowser
 filebrowser.*

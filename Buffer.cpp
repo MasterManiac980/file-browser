@@ -110,7 +110,7 @@ void Buffer::openFile(std::string fileName)
                 continue;
             }
 
-            if ((currentLine.size() + currentWord.size() + 1) < m_charsPerLine)
+            if ((currentLine.size() + currentWord.size() + 1) < m_charsPerLine) // Plus 1 because of the space character that is going to be added to separate the current word from the next one
             {
                 if (infile.get() == '\n')
                 {

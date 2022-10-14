@@ -11,9 +11,13 @@ Goal: To create a fully functional file browser with the following features:
 Decisions:
 
     - Main (main.cpp):
+
         - Initalizes an instance of the UI class and calls the UI::run() function
 
     - UI Class (UI.h and UI.cpp):
+    
         -
 
     - Buffer Class (Buffer.h and Buffer.cpp):
+
+        -
