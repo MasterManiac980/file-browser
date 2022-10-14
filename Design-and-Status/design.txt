@@ -19,4 +19,15 @@ Decisions:
 
     - Buffer Class (Buffer.h and Buffer.cpp):
 
-        -
+        - Where to convert from words to lines?
+
+            - I had to decide where to convert from the individual words that the Buffer was reading 
+              in into the lines that it was going to have to print out. I decided to have it happen as the file was being read in
+              to make the display function more efficient and also because it makes the display function easier to understand.
+
+        - Error Handling
+        
+            - All error printing was done through the buffer to avoid duplicating code and because the buffer already had error reporting created by
+              the time that the UI was at the point of needing to print errors
+
+            - It also made formatting easier when re-displaying the UI because there was only one function call rather than a function call and a cout statement
