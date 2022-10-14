@@ -80,6 +80,7 @@ void UI::execute(char selection, bool &isDone)
 void UI::run()
 {
     char command;
+    std::cout << "\033c";
 
     cout << "Enter Window Height (Lines): ";
     cin >> m_vertical_lines;
