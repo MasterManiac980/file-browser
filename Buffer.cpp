@@ -45,8 +45,10 @@ void Buffer::nextPage()
 
 void Buffer::openLastFile()
 {
+    if (!m_history.empty()) {
     openFile(m_history[m_history.size() - 1]);
     m_history.erase(m_history.begin() + (m_history.size() - 1));
+    }
 }
 
 void Buffer::openLink(uint32_t linkNumber)
