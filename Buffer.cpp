@@ -45,8 +45,13 @@ void Buffer::nextPage()
 
 void Buffer::openLastFile()
 {
+    if (!m_history.empty()) {
     openFile(m_history[m_history.size() - 1]);
     m_history.erase(m_history.begin() + (m_history.size() - 1));
+    }
+    else {
+        m_BufferErrorMessage = "File history empty";
+    }
 }
 
 void Buffer::openLink(uint32_t linkNumber)
@@ -57,6 +62,7 @@ void Buffer::openLink(uint32_t linkNumber)
 }
 
 void Buffer::printError(std::ostream &out)
+// Only prints errors if there is one present, if the error message string is empty, nothing is done
 {
     if (!m_BufferErrorMessage.empty())
     {
@@ -76,7 +82,10 @@ void Buffer::openFile(std::string fileName)
     if (!infile.fail())
     {
         m_bufferData.clear(); // Makes sure the buffer is clear before reading a new file into it
-        m_currentFileName = fileName;
+        m_fileNames.clear(); // Makes sure there are no file names currently stored before reading in the new file
+        m_topLineNum = 1; // sets the top line back to 1 so that the file is properly displayed next time the buffer is printed
+        m_currentFileName = fileName; // file name stored for later use if go command is entered
+
         std::string currentWord;
         std::string currentLine;
 
@@ -110,7 +119,8 @@ void Buffer::openFile(std::string fileName)
                 continue;
             }
 
-            if ((currentLine.size() + currentWord.size() + 1) < m_charsPerLine) // Plus 1 because of the space character that is going to be added to separate the current word from the next one
+            if ((currentLine.size() + currentWord.size() + 1) < m_charsPerLine) 
+            // Plus 1 because of the space character that is going to be added to separate the current word from the next one
             {
                 if (infile.get() == '\n')
                 {
@@ -142,14 +152,13 @@ void Buffer::openFile(std::string fileName)
                     currentLine += " ";
                 }
             }
-            if (infile.peek() == '	')
+            if (infile.peek() == '	') // checks for tab character
             {
                 currentLine.push_back('	');
             }
         }
         m_bufferData.push_back(currentLine); // if a file doesn't have a \n at the end of its last line, this pushes that line on to the data vector
         infile.close();
-        m_topLineNum = 1;
     }
     else
     {

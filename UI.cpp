@@ -28,14 +28,12 @@ void UI::execute(char selection, bool &isDone)
     switch (selection)
     {
     case 'N':
-    case 'n':
     {
         // Next page
         m_buffer.nextPage();
         break;
     }
     case 'G':
-    case 'g':
     {
         // Go ---opens a link
         int linkNumber;
@@ -45,7 +43,6 @@ void UI::execute(char selection, bool &isDone)
         break;
     }
     case 'O':
-    case 'o': 
     {
         // open file
         cout << "File Name: ";
@@ -55,21 +52,18 @@ void UI::execute(char selection, bool &isDone)
         break;
     }
     case 'B':
-    case 'b': 
     {
         // last file
         m_buffer.openLastFile();
         break;
     }
     case 'P':
-    case 'p':
     {
         // previous page
         m_buffer.lastPage();
         break;
     }
     case 'Q':
-    case 'q':
     {
         // quit
         isDone = true;
