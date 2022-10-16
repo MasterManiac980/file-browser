@@ -58,7 +58,7 @@ void Buffer::openLink(uint32_t linkNumber)
 {
     linkNumber -= 1; // Converts number provided to index for accessing file name in vector
     m_history.push_back(m_currentFileName);
-    openFile(m_fileNames[linkNumber]);
+    openFile(m_linkFileNames[linkNumber]);
 }
 
 void Buffer::printError(std::ostream &out)
@@ -82,7 +82,8 @@ void Buffer::openFile(std::string fileName)
     if (!infile.fail())
     {
         m_bufferData.clear(); // Makes sure the buffer is clear before reading a new file into it
-        m_fileNames.clear(); // Makes sure there are no file names currently stored before reading in the new file
+        m_linkFileNames.clear(); // Makes sure there are no file names currently stored before reading in the new file
+
         m_topLineNum = 1; // sets the top line back to 1 so that the file is properly displayed next time the buffer is printed
         m_currentFileName = fileName; // file name stored for later use if go command is entered
 
@@ -99,8 +100,8 @@ void Buffer::openFile(std::string fileName)
                 infile >> currentWord;
 
                 currentWord.erase(currentWord.begin() + (currentWord.size() - 1)); // removes '>' from the end of the file name
-                m_fileNames.push_back(fileName);
-                currentWord = "<" + currentWord + ">[" + std::to_string(m_fileNames.size()) + "]";
+                m_linkFileNames.push_back(fileName);
+                currentWord = "<" + currentWord + ">[" + std::to_string(m_linkFileNames.size()) + "]";
             }
             else if (currentWord == "<br>")
             {
