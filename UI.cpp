@@ -59,6 +59,7 @@ void UI::execute(char selection, bool &isDone)
     {
         // last file
         m_buffer.openLastFile();
+        m_buffer.printError();
         break;
     }
     case 'P':
