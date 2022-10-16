@@ -31,7 +31,7 @@ private:
     int16_t m_viewableLines;
     uint32_t m_charsPerLine;
 
-    std::vector<std::string> m_fileNames;
+    std::vector<std::string> m_linkFileNames;
     std::vector<std::string> m_history;
     std::string m_currentFileName;
 
