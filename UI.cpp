@@ -12,8 +12,8 @@ void UI::display()
     const string Long_Dash(80, '-');
 
     // prints error if there is one
-    m_buffer.printError();
-    cout << m_buffer.currentFile() << endl;
+    m_buffer.printError();//Prints error if one exists 
+    cout << m_buffer.currentFile() << endl; 
     cout << Long_Dash << endl
          << endl;
     m_buffer.display();
@@ -25,7 +25,6 @@ void UI::display()
 
 void UI::execute(char selection, bool &isDone)
 {
-    selection = toupper(selection);
     switch (selection)
     {
     case 'N':
@@ -38,7 +37,7 @@ void UI::execute(char selection, bool &isDone)
     case 'G':
     case 'g':
     {
-        // open link
+        // Go ---opens a link
         int linkNumber;
         cout << "Link Number: ";
         cin >> linkNumber;

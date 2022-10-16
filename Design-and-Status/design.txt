@@ -15,7 +15,7 @@ Decisions:
         - Initalizes an instance of the UI class and calls the UI::run() function
 
     - UI Class (UI.h and UI.cpp):
-        - 
+        - Display calls the display function from buffer and adds style elements. Also prints UI elements that 
 
     - Buffer Class (Buffer.h and Buffer.cpp):
 
