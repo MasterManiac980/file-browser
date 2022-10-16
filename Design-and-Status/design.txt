@@ -15,8 +15,15 @@ Decisions:
         - Initalizes an instance of the UI class and calls the UI::run() function
 
     - UI Class (UI.h and UI.cpp):
-        - Display calls the display function from buffer and adds style elements. Also prints UI elements that 
-
+        - Display calls the display function from buffer and adds style elements. Also prints UI elements that are needed for the execute and run.
+        - Execute excecutes commands and takes in a char that represents users choice and a bool to check if user is done reading file
+            - Uses a switch to check if user wants to open,go, back, next Page, previous Page, or quit 
+            - Open takes in a file name and uses the buffer function openFile to open the file with that name
+            - Go takes in link number from user and then uses the buffer function openLink to open the link
+            - Back uses the buffer function openLastFile to open the last file opened
+            - Previous uses the buffer function lastPage to go back to the last page of a file
+            - Next Page uses the nextPage function to move to the next page of a file
+        - 
     - Buffer Class (Buffer.h and Buffer.cpp):
 
         -
