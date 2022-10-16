@@ -62,7 +62,7 @@ void UI::execute(char selection, bool &isDone)
         break;
     }
     case 'P':
-    case 'p'
+    case 'p':
     {
         // previous page
         m_buffer.lastPage();
