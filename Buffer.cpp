@@ -47,23 +47,31 @@ void Buffer::nextPage()
 
 void Buffer::openLastFile()
 {
-    if (!m_history.empty()) {
-    openFile(m_history[m_history.size() - 1]);
-    m_history.erase(m_history.begin() + (m_history.size() - 1));
+    if (!m_history.empty())
+    {
+        openFile(m_history[m_history.size() - 1]);
+        m_history.erase(m_history.begin() + (m_history.size() - 1));
     }
-    else {
+    else
+    {
         m_BufferErrorMessage = "File history empty";
     }
 }
 
 void Buffer::openLink(uint32_t linkNumber)
 {
-    if (linkNumber >= 1) {
-    linkNumber -= 1; // Converts number provided to index for accessing file name in vector
-    m_history.push_back(m_currentFileName);
-    openFile(m_linkFileNames[linkNumber]);
+    if ((linkNumber >= 1 && linkNumber <= m_linkFileNames.size()) && !m_linkFileNames.empty())
+    {
+        linkNumber -= 1; // Converts number provided to index for accessing file name in vector
+        m_history.push_back(m_currentFileName);
+        openFile(m_linkFileNames[linkNumber]);
     }
-    else {
+    else if (m_linkFileNames.empty())
+    {
+        m_BufferErrorMessage = "This file has no links.";
+    }
+    else if (linkNumber < 1 || linkNumber > m_linkFileNames.size())
+    {
         m_BufferErrorMessage = "Invalid link number. Valid Range: 1-" + m_linkFileNames.size();
     }
 }
@@ -88,10 +96,10 @@ void Buffer::openFile(std::string fileName)
     std::ifstream infile(fileName);
     if (!infile.fail())
     {
-        m_bufferData.clear(); // Makes sure the buffer is clear before reading a new file into it
+        m_bufferData.clear();    // Makes sure the buffer is clear before reading a new file into it
         m_linkFileNames.clear(); // Makes sure there are no file names currently stored before reading in the new file
 
-        m_topLineNum = 1; // sets the top line back to 1 so that the file is properly displayed next time the buffer is printed
+        m_topLineNum = 1;             // sets the top line back to 1 so that the file is properly displayed next time the buffer is printed
         m_currentFileName = fileName; // file name stored for later use if go command is entered
 
         std::string currentWord;
@@ -127,7 +135,7 @@ void Buffer::openFile(std::string fileName)
                 continue;
             }
 
-            if ((currentLine.size() + currentWord.size() + 1) < m_charsPerLine) 
+            if ((currentLine.size() + currentWord.size() + 1) < m_charsPerLine)
             // Plus 1 because of the space character that is going to be added to separate the current word from the next one
             {
                 if (infile.get() == '\n')
