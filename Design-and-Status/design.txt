@@ -23,7 +23,7 @@ Decisions:
             - Back uses the buffer function openLastFile to open the last file opened
             - Previous uses the buffer function lastPage to go back to the last page of a file
             - Next Page uses the nextPage function to move to the next page of a file
-        - 
+            
     - Buffer Class (Buffer.h and Buffer.cpp):
 
         - Where to convert from words to lines?
