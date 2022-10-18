@@ -58,9 +58,14 @@ void Buffer::openLastFile()
 
 void Buffer::openLink(uint32_t linkNumber)
 {
+    if (linkNumber >= 1) {
     linkNumber -= 1; // Converts number provided to index for accessing file name in vector
     m_history.push_back(m_currentFileName);
     openFile(m_linkFileNames[linkNumber]);
+    }
+    else {
+        m_BufferErrorMessage = "Invalid link number. Valid Range: 1-" + m_linkFileNames.size();
+    }
 }
 
 void Buffer::printError(std::ostream &out)
