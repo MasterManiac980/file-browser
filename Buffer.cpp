@@ -5,6 +5,8 @@
 #include "Buffer.h"
 
 void Buffer::display()
+// Checks to make sure that there is something in the buffer to be printed thne prints it as long as there is something to to print
+// and it is within the bounds of the viewable area of the file
 {
     uint64_t currentLineNumber = m_topLineNum;
     if (!m_bufferData.empty())
