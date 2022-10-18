@@ -18,7 +18,7 @@ public:
     void nextPage();
     void lastPage();
     void openLastFile();
-    void openLink(uint32_t linkNumber);
+    void openLink(int32_t linkNumber);
     void openFile(std::string fileName);
 
     // Error Reporting

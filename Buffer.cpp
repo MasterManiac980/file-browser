@@ -58,7 +58,7 @@ void Buffer::openLastFile()
     }
 }
 
-void Buffer::openLink(uint32_t linkNumber)
+void Buffer::openLink(int32_t linkNumber)
 {
     if ((linkNumber >= 1 && linkNumber <= m_linkFileNames.size()) && !m_linkFileNames.empty())
     {
@@ -72,7 +72,7 @@ void Buffer::openLink(uint32_t linkNumber)
     }
     else if (linkNumber < 1 || linkNumber > m_linkFileNames.size())
     {
-        m_BufferErrorMessage = "Invalid link number. Valid Range: 1-" + m_linkFileNames.size();
+        m_BufferErrorMessage = "Invalid link number. Valid Range: 1-" + std::to_string(m_linkFileNames.size());
     }
 }
 
